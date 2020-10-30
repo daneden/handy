@@ -40,10 +40,18 @@ export default function HomePage() {
     <>
       <Head>
         <title>Handicap Score Calculator | Abergele Golf Club</title>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+          rel="stylesheet"
+        />
       </Head>
-      <main>
-        <h1>Abergele Golf Club</h1>
-        <h2>Handicap Score Calculator</h2>
+      <header>
+        <div className="container">
+          <h1>Abergele Golf Club</h1>
+          <h2>Handicap Score Calculator</h2>
+        </div>
+      </header>
+      <main className="container">
         <Input label="Handicap Index">
           <input
             type="number"
@@ -94,6 +102,12 @@ export default function HomePage() {
           font-size: 3rem;
           line-height: 1;
         }
+
+        header {
+          color: white;
+          padding: 1.5rem;
+          margin: -1.5rem;
+        }
       `}</style>
       <style jsx global>{`
         * {
@@ -104,6 +118,7 @@ export default function HomePage() {
         }
 
         :root {
+          --brand-color: #406e8e;
           --highlight-color: royalblue;
           --wash-color: #fefefe;
           --text-color: #111;
@@ -124,10 +139,10 @@ export default function HomePage() {
         }
 
         html {
-          font: 125%/1.5 system-ui, -apply-system, BlinkMacSystemFont,
+          font: 125%/1.5 "Poppins", system-ui, -apply-system, BlinkMacSystemFont,
             sans-serif;
           color: var(--text-color);
-          background-color: var(--wash-color);
+          background-color: var(--brand-color);
         }
 
         @media (max-width: 600px) {
@@ -136,10 +151,22 @@ export default function HomePage() {
           }
         }
 
-        main {
+        .container {
           max-width: 30rem;
           margin: 0 auto;
           padding: 1.5rem;
+        }
+
+        @media (max-width: 30rem) {
+          .container {
+            margin: 0 0.25rem;
+          }
+        }
+
+        main {
+          background-color: var(--wash-color);
+          border-radius: 1rem;
+          box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
         }
 
         h1 {
@@ -151,7 +178,6 @@ export default function HomePage() {
           font-size: 1.25rem;
           line-height: 1.25;
           font-weight: 400;
-          margin-bottom: 1.5rem;
         }
 
         hr {
