@@ -19,16 +19,22 @@ const slopeRatings = [
   },
 ]
 
+const allowances = [100, 95, 90, 85, 75]
+
 export default function HomePage() {
   const [handicapIndex, setHandicapIndex] = useState(0)
   const [slopeRating, setSlopeRating] = useState(0)
+  const [allowance, setAllowance] = useState(0)
   const [score, setScore] = useState(0)
 
   useEffect(() => {
     setScore(
-      Math.round((handicapIndex * slopeRatings[slopeRating].rating) / CONSTANT)
+      Math.round(
+        ((handicapIndex * slopeRatings[slopeRating].rating) / CONSTANT) *
+          (allowances[allowance] / 100)
+      )
     )
-  }, [handicapIndex, slopeRating])
+  }, [handicapIndex, slopeRating, allowance])
 
   return (
     <>
@@ -41,11 +47,7 @@ export default function HomePage() {
         <Input label="Handicap Index">
           <input
             type="number"
-<<<<<<< HEAD
-            value={Number(handicapIndex).toString()}
-=======
             value={handicapIndex}
->>>>>>> parent of 581fc84... Try to fix numeric value
             onChange={(e) =>
               setHandicapIndex(Math.min(Number(e.currentTarget.value), 54))
             }
@@ -64,6 +66,19 @@ export default function HomePage() {
             {slopeRatings.map((item, index) => (
               <option key={item.name} value={index}>
                 {item.name} ({item.rating})
+              </option>
+            ))}
+          </select>
+        </Input>
+
+        <Input label="Handicap allowance">
+          <select
+            value={allowance}
+            onChange={(e) => setAllowance(Number(e.currentTarget.value))}
+          >
+            {allowances.map((item, index) => (
+              <option key={item} value={index}>
+                {item}%
               </option>
             ))}
           </select>
