@@ -4,13 +4,30 @@ import Head from "next/head"
 
 const CONSTANT = 113
 
+const slopeRatings = [
+  {
+    name: "White",
+    rating: 124,
+  },
+  {
+    name: "Yellow",
+    rating: 119,
+  },
+  {
+    name: "Red",
+    rating: 119,
+  },
+]
+
 export default function HomePage() {
   const [handicapIndex, setHandicapIndex] = useState(5)
   const [slopeRating, setSlopeRating] = useState(124)
   const [score, setScore] = useState(0)
 
   useEffect(() => {
-    setScore(Math.round((handicapIndex * slopeRating) / CONSTANT))
+    setScore(
+      Math.round((handicapIndex * slopeRatings[slopeRating].rating) / CONSTANT)
+    )
   }, [handicapIndex, slopeRating])
 
   return (
@@ -36,9 +53,11 @@ export default function HomePage() {
             value={slopeRating}
             onChange={(e) => setSlopeRating(Number(e.currentTarget.value))}
           >
-            <option value={124}>White (124)</option>
-            <option value={119}>Yellow (119)</option>
-            <option value={119}>Red (119)</option>
+            {slopeRatings.map((item, index) => (
+              <option value={index}>
+                {item.name} ({item.rating})
+              </option>
+            ))}
           </select>
         </Input>
 
