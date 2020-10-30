@@ -20,7 +20,7 @@ const slopeRatings = [
 ]
 
 export default function HomePage() {
-  const [handicapIndex, setHandicapIndex] = useState(5)
+  const [handicapIndex, setHandicapIndex] = useState(0)
   const [slopeRating, setSlopeRating] = useState(0)
   const [score, setScore] = useState(0)
 
@@ -33,22 +33,26 @@ export default function HomePage() {
   return (
     <>
       <Head>
-        <title>Handicap Score Calculator</title>
+        <title>Handicap Score Calculator | Abergele Golf Club</title>
       </Head>
       <main>
-        <h1>Handicap Score Calculator</h1>
+        <h1>Abergele Golf Club</h1>
+        <h2>Handicap Score Calculator</h2>
         <Input label="Handicap Index">
           <input
             type="number"
             value={handicapIndex}
-            onChange={(e) => setHandicapIndex(Number(e.currentTarget.value))}
+            onChange={(e) =>
+              setHandicapIndex(Math.min(Number(e.currentTarget.value), 54))
+            }
             min={0}
             max={54}
             step={0.1}
+            inputMode="decimal"
           />
         </Input>
 
-        <Input label="Slope Rating">
+        <Input label="Select which tees you are playing off">
           <select
             value={slopeRating}
             onChange={(e) => setSlopeRating(Number(e.currentTarget.value))}
@@ -62,7 +66,7 @@ export default function HomePage() {
         </Input>
 
         <hr />
-        <p>Handicap Score:</p>
+        <p>Your playing handicap:</p>
         <p className="large">{score}</p>
       </main>
       <style jsx>{`
@@ -122,6 +126,12 @@ export default function HomePage() {
         h1 {
           font-size: 1.5rem;
           line-height: 1.25;
+        }
+
+        h2 {
+          font-size: 1.25rem;
+          line-height: 1.25;
+          font-weight: 400;
           margin-bottom: 1.5rem;
         }
 
