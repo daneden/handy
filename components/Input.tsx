@@ -23,6 +23,7 @@ export default function Input({ label, description, children }: Props) {
         }
 
         span.label {
+          font-size: 0.875rem;
           font-weight: 600;
         }
 
