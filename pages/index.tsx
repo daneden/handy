@@ -105,8 +105,6 @@ export default function HomePage() {
 
         header {
           color: white;
-          padding: 1.5rem;
-          margin: -1.5rem;
         }
       `}</style>
       <style jsx global>{`
