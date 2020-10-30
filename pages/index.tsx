@@ -48,7 +48,7 @@ export default function HomePage() {
       <header>
         <div className="container">
           <h1>Abergele Golf Club</h1>
-          <h2>Handicap Score Calculator</h2>
+          <h2>Playing Handicap Calculator</h2>
         </div>
       </header>
       <main className="container">
@@ -95,6 +95,12 @@ export default function HomePage() {
         <hr />
         <p>Your playing handicap:</p>
         <p className="large">{score}</p>
+        <hr />
+        <footer>
+          <small>
+            Note that this result is only valid for Abergele tees (18 holes)
+          </small>
+        </footer>
       </main>
       <style jsx>{`
         .large {
