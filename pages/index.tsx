@@ -21,7 +21,7 @@ const slopeRatings = [
 
 export default function HomePage() {
   const [handicapIndex, setHandicapIndex] = useState(5)
-  const [slopeRating, setSlopeRating] = useState(124)
+  const [slopeRating, setSlopeRating] = useState(0)
   const [score, setScore] = useState(0)
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function HomePage() {
             onChange={(e) => setSlopeRating(Number(e.currentTarget.value))}
           >
             {slopeRatings.map((item, index) => (
-              <option value={index}>
+              <option key={item.name} value={index}>
                 {item.name} ({item.rating})
               </option>
             ))}
