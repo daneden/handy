@@ -41,7 +41,11 @@ export default function HomePage() {
         <Input label="Handicap Index">
           <input
             type="number"
+<<<<<<< HEAD
             value={Number(handicapIndex).toString()}
+=======
+            value={handicapIndex}
+>>>>>>> parent of 581fc84... Try to fix numeric value
             onChange={(e) =>
               setHandicapIndex(Math.min(Number(e.currentTarget.value), 54))
             }
