@@ -1,5 +1,6 @@
 import Input from "../components/Input"
 import { useEffect, useState } from "react"
+import Head from "next/head"
 
 const CONSTANT = 113
 
@@ -14,6 +15,9 @@ export default function HomePage() {
 
   return (
     <>
+      <Head>
+        <title>Handicap Score Calculator</title>
+      </Head>
       <main>
         <h1>Handicap Score Calculator</h1>
         <Input label="Handicap Index">
