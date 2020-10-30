@@ -41,7 +41,7 @@ export default function HomePage() {
         <Input label="Handicap Index">
           <input
             type="number"
-            value={handicapIndex}
+            value={Number(handicapIndex)}
             onChange={(e) =>
               setHandicapIndex(Math.min(Number(e.currentTarget.value), 54))
             }
