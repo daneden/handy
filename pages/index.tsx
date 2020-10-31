@@ -1,116 +1,59 @@
 import Input from "../components/Input"
 import { useEffect, useState } from "react"
 import Head from "next/head"
+import HandicapCalculator from "../components/HandicapCalculator"
+import Image from "next/image"
 
-const CONSTANT = 113
-
-const slopeRatings = [
-  {
-    name: "White",
-    rating: 124,
-  },
-  {
-    name: "Yellow",
-    rating: 119,
-  },
-  {
-    name: "Red",
-    rating: 119,
-  },
-]
-
-const allowances = [100, 95, 90, 85, 75]
+const PAGE_TITLE = "Playing Handicap Calculator"
 
 export default function HomePage() {
-  const [handicapIndex, setHandicapIndex] = useState(0)
-  const [slopeRating, setSlopeRating] = useState(0)
-  const [allowance, setAllowance] = useState(0)
-  const [score, setScore] = useState(0)
-
-  useEffect(() => {
-    setScore(
-      Math.round(
-        ((handicapIndex * slopeRatings[slopeRating].rating) / CONSTANT) *
-          (allowances[allowance] / 100)
-      )
-    )
-  }, [handicapIndex, slopeRating, allowance])
-
   return (
     <>
       <Head>
-        <title>Handicap Score Calculator | Abergele Golf Club</title>
+        <title>{PAGE_TITLE} | Abergele Golf Club</title>
         <link
           href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
           rel="stylesheet"
         />
+        <link rel="apple-touch-icon" href="/AbergeleGolfClub_Logo.jpeg" />
+        <meta name="apple-mobile-web-app-title" content="Handicap Calculator" />
       </Head>
       <header>
         <div className="container">
-          <h1>Abergele Golf Club</h1>
-          <h2>Playing Handicap Calculator</h2>
+          <div className="title">
+            <h1>Abergele Golf Club</h1>
+            <h2>{PAGE_TITLE}</h2>
+          </div>
+          <div className="logo">
+            <Image
+              src="/AbergeleGolfClub_Logo.jpeg"
+              width={567}
+              height={545}
+              sizes="80px"
+            />
+          </div>
         </div>
       </header>
       <main className="container">
-        <Input label="Handicap Index">
-          <input
-            type="number"
-            value={handicapIndex}
-            onChange={(e) =>
-              setHandicapIndex(Math.min(Number(e.currentTarget.value), 54))
-            }
-            min={0}
-            max={54}
-            step={0.1}
-            inputMode="decimal"
-          />
-        </Input>
-
-        <Input label="Select which tees you are playing off">
-          <select
-            value={slopeRating}
-            onChange={(e) => setSlopeRating(Number(e.currentTarget.value))}
-          >
-            {slopeRatings.map((item, index) => (
-              <option key={item.name} value={index}>
-                {item.name} ({item.rating})
-              </option>
-            ))}
-          </select>
-        </Input>
-
-        <Input label="Handicap allowance">
-          <select
-            value={allowance}
-            onChange={(e) => setAllowance(Number(e.currentTarget.value))}
-          >
-            {allowances.map((item, index) => (
-              <option key={item} value={index}>
-                {item}%
-              </option>
-            ))}
-          </select>
-        </Input>
-
-        <hr />
-        <p>Your playing handicap:</p>
-        <p className="large">{score}</p>
-        <hr />
-        <footer>
-          <small>
-            Note that this result is only valid for Abergele tees (18 holes)
-          </small>
-        </footer>
+        <HandicapCalculator />
       </main>
       <style jsx>{`
-        .large {
-          font-weight: 600;
-          font-size: 3rem;
-          line-height: 1;
-        }
-
         header {
           color: white;
+        }
+
+        header .container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .logo {
+          width: 4rem;
+          box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          border-radius: 30%;
+          margin-left: 1rem;
         }
       `}</style>
       <style jsx global>{`
