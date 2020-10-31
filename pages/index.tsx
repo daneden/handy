@@ -15,7 +15,7 @@ export default function HomePage() {
           href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
           rel="stylesheet"
         />
-        <link rel="apple-touch-icon" href="/AbergeleGolfClub_Logo.jpeg" />
+        <link rel="apple-touch-icon" href="/logo.jpg" />
         <meta name="apple-mobile-web-app-title" content="Handicap Calculator" />
       </Head>
       <header>
@@ -25,12 +25,7 @@ export default function HomePage() {
             <h2>{PAGE_TITLE}</h2>
           </div>
           <div className="logo">
-            <Image
-              src="/AbergeleGolfClub_Logo.jpeg"
-              width={567}
-              height={545}
-              sizes="80px"
-            />
+            <Image src="/logo.jpg" width={426} height={426} sizes="80px" />
           </div>
         </div>
       </header>
