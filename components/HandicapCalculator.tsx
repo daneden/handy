@@ -2,6 +2,7 @@ import Input from "./Input"
 import { useEffect, useState } from "react"
 
 const CONSTANT = 113
+const { round } = Math
 
 const slopeRatings = [
   {
@@ -28,8 +29,8 @@ export default function HandicapCalculator() {
 
   useEffect(() => {
     setScore(
-      Math.round(
-        ((handicapIndex * slopeRatings[slopeRating].rating) / CONSTANT) *
+      round(
+        round((handicapIndex * slopeRatings[slopeRating].rating) / CONSTANT) *
           (allowances[allowance] / 100)
       )
     )
