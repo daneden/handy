@@ -1,5 +1,5 @@
 import Input from "./Input"
-import { useEffect, useState } from "react"
+import { KeyboardEvent, useEffect, useRef, useState } from "react"
 
 const CONSTANT = 113
 const { round } = Math
@@ -22,7 +22,7 @@ const slopeRatings = [
 const allowances = [100, 95, 90, 85, 75]
 
 export default function HandicapCalculator() {
-  const [handicapIndex, setHandicapIndex] = useState(0)
+  const [handicapIndex, setHandicapIndex] = useState("0")
   const [slopeRating, setSlopeRating] = useState(0)
   const [allowance, setAllowance] = useState(0)
   const [score, setScore] = useState(0)
@@ -30,25 +30,71 @@ export default function HandicapCalculator() {
   useEffect(() => {
     setScore(
       round(
-        round((handicapIndex * slopeRatings[slopeRating].rating) / CONSTANT) *
+        round(
+          (Number(handicapIndex) * slopeRatings[slopeRating].rating) / CONSTANT
+        ) *
           (allowances[allowance] / 100)
       )
     )
   }, [handicapIndex, slopeRating, allowance])
 
+  function sanitizeAndSetHandicapIndex(newValue: string) {
+    let transformedValue = newValue
+      // Remove anything that isn’t a number or a period
+      .replace(/[^0-9.]/, "")
+      // Replace multiple periods with just one
+      .replace(/\.+/gm, ".")
+      // Remove leading zeros
+      .replace(/^0?([0-9]+)/, "$1")
+
+    // Constrain number
+    const valueAsNumber = parseFloat(transformedValue)
+    if (valueAsNumber > 54) {
+      transformedValue = "54"
+    } else if (valueAsNumber < 0) {
+      transformedValue = "0"
+    }
+
+    setHandicapIndex(transformedValue)
+  }
+
+  function handleKeyPress(e: KeyboardEvent) {
+    // When holding shift, increment by 1, otherwise by 0.1
+    const increment = e.shiftKey ? 10 : 1
+
+    // If the user is holding command/ctrl, use the default behaviour
+    if (e.metaKey) {
+      return
+    }
+
+    // Switch over up/down arrows to increment/decrement
+    switch (e.key) {
+      case "ArrowUp":
+        e.preventDefault()
+        return sanitizeAndSetHandicapIndex(
+          // Here we multiply the value by 10, increment, then divide by 10
+          // to avoid a rounding error when incrementing by 0.1
+          ((Number(handicapIndex) * 10 + increment) / 10).toString()
+        )
+
+      case "ArrowDown":
+        e.preventDefault()
+        return sanitizeAndSetHandicapIndex(
+          ((Number(handicapIndex) * 10 - increment) / 10).toString()
+        )
+    }
+  }
+
   return (
     <>
       <Input label="Handicap Index">
         <input
-          type="number"
+          type="text"
           value={handicapIndex}
-          onChange={(e) =>
-            setHandicapIndex(Math.min(Number(e.currentTarget.value), 54))
-          }
-          min={0}
-          max={54}
-          step={0.1}
+          onChange={(e) => sanitizeAndSetHandicapIndex(e.currentTarget.value)}
+          onKeyDown={handleKeyPress}
           inputMode="decimal"
+          pattern="[0-9.]*"
         />
       </Input>
 
