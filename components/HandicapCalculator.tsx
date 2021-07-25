@@ -15,7 +15,7 @@ const slopeRatings = [
   },
   {
     name: "Red",
-    rating: 119,
+    rating: 118,
   },
 ]
 
