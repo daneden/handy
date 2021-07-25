@@ -102,7 +102,7 @@ export default function HandicapCalculator() {
 
       <Input label="Select which tees you are playing off">
         <select
-          data-testid="tees-selector"
+          data-testid="tee-selector"
           value={slopeRating}
           onChange={(e) => setSlopeRating(Number(e.currentTarget.value))}
         >
