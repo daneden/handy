@@ -39,6 +39,7 @@ export default function HandicapCalculator() {
   }, [handicapIndex, slopeRating, allowance])
 
   function sanitizeAndSetHandicapIndex(newValue: string) {
+    console.log(newValue)
     let transformedValue = newValue
       // Remove anything that isn’t a number or a period
       .replace(/[^0-9.]/, "")
@@ -71,17 +72,17 @@ export default function HandicapCalculator() {
     switch (e.key) {
       case "ArrowUp":
         e.preventDefault()
-        return sanitizeAndSetHandicapIndex(
-          // Here we multiply the value by 10, increment, then divide by 10
-          // to avoid a rounding error when incrementing by 0.1
-          ((Number(handicapIndex) * 10 + increment) / 10).toString()
-        )
+        // Here we multiply the value by 10, increment, then divide by 10
+        // to avoid a rounding error when incrementing by 0.1
+        const incrementedValue = (Number(handicapIndex) * 10 + increment) / 10
+        if (incrementedValue > 54) return
+        return sanitizeAndSetHandicapIndex(incrementedValue.toString())
 
       case "ArrowDown":
         e.preventDefault()
-        return sanitizeAndSetHandicapIndex(
-          ((Number(handicapIndex) * 10 - increment) / 10).toString()
-        )
+        const decrementedValue = (Number(handicapIndex) * 10 - increment) / 10
+        if (decrementedValue < 0) return
+        return sanitizeAndSetHandicapIndex(decrementedValue.toString())
     }
   }
 
@@ -89,6 +90,7 @@ export default function HandicapCalculator() {
     <>
       <Input label="Handicap Index">
         <input
+          data-testid="handicap-index"
           type="text"
           value={handicapIndex}
           onChange={(e) => sanitizeAndSetHandicapIndex(e.currentTarget.value)}
@@ -100,6 +102,7 @@ export default function HandicapCalculator() {
 
       <Input label="Select which tees you are playing off">
         <select
+          data-testid="tees-selector"
           value={slopeRating}
           onChange={(e) => setSlopeRating(Number(e.currentTarget.value))}
         >
@@ -113,6 +116,7 @@ export default function HandicapCalculator() {
 
       <Input label="Handicap allowance">
         <select
+          data-testid="handicap-allowance"
           value={allowance}
           onChange={(e) => setAllowance(Number(e.currentTarget.value))}
         >
@@ -126,7 +130,9 @@ export default function HandicapCalculator() {
 
       <hr />
       <p>Your playing handicap:</p>
-      <p className="large">{score}</p>
+      <p data-testid="final-value" className="large">
+        {score}
+      </p>
       <hr />
       <footer>
         <small>
