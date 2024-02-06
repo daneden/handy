@@ -113,10 +113,7 @@ export default function HandicapCalculator() {
       <Input label="Handicap Index">
         <input
           data-testid="handicap-index"
-          type="step"
-          step="0.1"
-          min={HANDICAP_MIN}
-          max={HANDICAP_MAX}
+          type="text"
           value={handicapIndex}
           onChange={(e) => sanitizeAndSetHandicapIndex(e.currentTarget.value)}
           onKeyDown={handleKeyPress}
