@@ -31,7 +31,7 @@ export default function Input({ label, description, children }: Props) {
         label :global(textarea),
         label :global(select) {
           -webkit-appearance: none;
-          display: block;
+          width: 100%;
           background-color: rgba(128, 128, 128, 0.05);
           padding: 0.25em 0.5em;
           font: inherit;

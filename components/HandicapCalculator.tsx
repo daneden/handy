@@ -1,21 +1,36 @@
+import { KeyboardEvent, useEffect, useState } from "react"
 import Input from "./Input"
-import { KeyboardEvent, useEffect, useRef, useState } from "react"
 
 const CONSTANT = 113
+const [HANDICAP_MIN, HANDICAP_MAX] = [-5.0, 54.0]
 const { round } = Math
+const handicapRegex = /(-)?(\d{1,2})(\.?\d)/
 
-const slopeRatings = [
+interface Tee {
+  name: string
+  rating: number
+  courseRating: number
+  par: number
+}
+
+const slopeRatings: Array<Tee> = [
   {
     name: "White",
     rating: 124,
+    courseRating: 71.8,
+    par: 72,
   },
   {
     name: "Yellow",
     rating: 119,
+    courseRating: 69.4,
+    par: 72,
   },
   {
     name: "Red",
     rating: 118,
+    courseRating: 72.4,
+    par: 73,
   },
 ]
 
@@ -28,32 +43,39 @@ export default function HandicapCalculator() {
   const [score, setScore] = useState(0)
 
   useEffect(() => {
+    const { rating, courseRating, par } = slopeRatings[slopeRating]
+    const allowancePercentage = allowances[allowance] / 100
+    const handicapNum = Number.isNaN(Number(handicapIndex))
+      ? 0
+      : Number(handicapIndex)
+
     setScore(
       round(
-        round(
-          (Number(handicapIndex) * slopeRatings[slopeRating].rating) / CONSTANT
-        ) *
-          (allowances[allowance] / 100)
+        (handicapNum * rating) / CONSTANT +
+          (courseRating - par) * allowancePercentage
       )
     )
   }, [handicapIndex, slopeRating, allowance])
 
   function sanitizeAndSetHandicapIndex(newValue: string) {
-    console.log(newValue)
     let transformedValue = newValue
       // Remove anything that isn’t a number or a period
-      .replace(/[^0-9.]/, "")
-      // Replace multiple periods with just one
-      .replace(/\.+/gm, ".")
+      .replace(/[^\d.-]/, "")
+      // Replace multiple minus signs with just one
+      .replace(/-+/, "-")
+      // Replace all but leading minus signs
+      .replace(/(?!^)-/g, "")
       // Remove leading zeros
-      .replace(/^0?([0-9]+)/, "$1")
+      .replace(/^(-)?0?(\d+)/, "$1$2")
+      // Ensure only up to one period
+      .replace(/(?<!^-?\d{1,2})\./g, "")
 
     // Constrain number
     const valueAsNumber = parseFloat(transformedValue)
-    if (valueAsNumber > 54) {
-      transformedValue = "54"
-    } else if (valueAsNumber < 0) {
-      transformedValue = "0"
+    if (valueAsNumber > HANDICAP_MAX) {
+      transformedValue = HANDICAP_MAX.toString()
+    } else if (valueAsNumber < HANDICAP_MIN) {
+      transformedValue = HANDICAP_MIN.toString()
     }
 
     setHandicapIndex(transformedValue)
@@ -75,13 +97,13 @@ export default function HandicapCalculator() {
         // Here we multiply the value by 10, increment, then divide by 10
         // to avoid a rounding error when incrementing by 0.1
         const incrementedValue = (Number(handicapIndex) * 10 + increment) / 10
-        if (incrementedValue > 54) return
+        if (incrementedValue > HANDICAP_MAX) return
         return sanitizeAndSetHandicapIndex(incrementedValue.toString())
 
       case "ArrowDown":
         e.preventDefault()
         const decrementedValue = (Number(handicapIndex) * 10 - increment) / 10
-        if (decrementedValue < 0) return
+        if (decrementedValue < HANDICAP_MIN) return
         return sanitizeAndSetHandicapIndex(decrementedValue.toString())
     }
   }
@@ -91,12 +113,15 @@ export default function HandicapCalculator() {
       <Input label="Handicap Index">
         <input
           data-testid="handicap-index"
-          type="text"
+          type="step"
+          step="0.1"
+          min={HANDICAP_MIN}
+          max={HANDICAP_MAX}
           value={handicapIndex}
           onChange={(e) => sanitizeAndSetHandicapIndex(e.currentTarget.value)}
           onKeyDown={handleKeyPress}
-          inputMode="decimal"
-          pattern="[0-9.]*"
+          inputMode="numeric"
+          pattern={handicapRegex.source}
         />
       </Input>
 
@@ -142,8 +167,9 @@ export default function HandicapCalculator() {
       <style jsx>{`
         .large {
           font-weight: 600;
-          font-size: 3rem;
+          font-size: 4rem;
           line-height: 1;
+          font-variation-settings: "wdth" 70;
         }
       `}</style>
     </>

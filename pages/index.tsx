@@ -1,8 +1,6 @@
-import Input from "../components/Input"
-import { useEffect, useState } from "react"
 import Head from "next/head"
-import HandicapCalculator from "../components/HandicapCalculator"
 import Image from "next/image"
+import HandicapCalculator from "../components/HandicapCalculator"
 
 const PAGE_TITLE = "Playing Handicap Calculator"
 
@@ -11,10 +9,6 @@ export default function HomePage() {
     <>
       <Head>
         <title>{PAGE_TITLE} | Abergele Golf Club</title>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-          rel="stylesheet"
-        />
         <link rel="apple-touch-icon" href="/logo.jpg" />
         <meta name="apple-mobile-web-app-title" content="Handicap Calculator" />
       </Head>
@@ -25,7 +19,12 @@ export default function HomePage() {
             <h2>{PAGE_TITLE}</h2>
           </div>
           <div className="logo">
-            <Image src="/logo.jpg" width={426} height={426} sizes="80px" />
+            <Image
+              alt="Abergele Gold Club Logo"
+              src="/logo.jpg"
+              width={80}
+              height={80}
+            />
           </div>
         </div>
       </header>
@@ -40,15 +39,22 @@ export default function HomePage() {
         header .container {
           display: flex;
           justify-content: space-between;
+          gap: 1rem;
           align-items: center;
         }
 
         .logo {
-          width: 4rem;
           box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
           overflow: hidden;
           border-radius: 30%;
-          margin-left: 1rem;
+          line-height: 1;
+          aspect-ratio: 1 / 1;
+        }
+
+        .logo > :global(img) {
+          max-width: 100%;
+          height: auto;
+          display: block;
         }
       `}</style>
       <style jsx global>{`
@@ -81,7 +87,7 @@ export default function HomePage() {
         }
 
         html {
-          font: 125%/1.5 "Poppins", system-ui, -apply-system, BlinkMacSystemFont,
+          font: 125%/1.5 system-ui, -apple-system, BlinkMacSystemFont,
             sans-serif;
           color: var(--text-color);
           background-color: var(--brand-color);
@@ -109,6 +115,7 @@ export default function HomePage() {
           background-color: var(--wash-color);
           border-radius: 1rem;
           box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
+          margin-bottom: 1.5rem;
         }
 
         h1 {
