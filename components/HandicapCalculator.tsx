@@ -42,6 +42,8 @@ export default function HandicapCalculator() {
   const [allowance, setAllowance] = useState(0)
   const [score, setScore] = useState(0)
 
+  const isNegative = Number(handicapIndex) < 0
+
   useEffect(() => {
     const { rating, courseRating, par } = slopeRatings[slopeRating]
     const allowancePercentage = allowances[allowance] / 100
@@ -51,8 +53,8 @@ export default function HandicapCalculator() {
 
     setScore(
       round(
-        (handicapNum * rating) / CONSTANT +
-          (courseRating - par) * allowancePercentage
+        ((handicapNum * rating) / CONSTANT + (courseRating - par)) *
+          allowancePercentage
       )
     )
   }, [handicapIndex, slopeRating, allowance])
@@ -120,11 +122,27 @@ export default function HandicapCalculator() {
           value={handicapIndex}
           onChange={(e) => sanitizeAndSetHandicapIndex(e.currentTarget.value)}
           onKeyDown={handleKeyPress}
-          // @ts-ignore
-          inputMode="number"
           pattern={handicapRegex.source}
         />
       </Input>
+
+      <label className="checkbox-label">
+        <input
+          type="checkbox"
+          checked={!isNegative}
+          onInput={() =>
+            sanitizeAndSetHandicapIndex((Number(handicapIndex) * -1).toString())
+          }
+          disabled={Number(handicapIndex) === 0}
+        />{" "}
+        <span className="label-text">
+          Positive handicap{" "}
+          <small className="description">
+            Updates automatically. Click to toggle between positive and negative
+            value.
+          </small>
+        </span>
+      </label>
 
       <Input label="Select which tees you are playing off">
         <select
@@ -171,6 +189,17 @@ export default function HandicapCalculator() {
           font-size: 4rem;
           line-height: 1;
           font-variation-settings: "wdth" 70;
+        }
+
+        .checkbox-label {
+          display: flex;
+          align-items: baseline;
+          gap: 0.25em;
+          margin-bottom: 0.75rem;
+        }
+
+        small.description {
+          display: block;
         }
       `}</style>
     </>

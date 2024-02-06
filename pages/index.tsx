@@ -134,6 +134,16 @@ export default function HomePage() {
           border: none;
           border-top: 1px solid var(--edge-highlight);
         }
+
+        .label-text {
+          font-size: 0.875rem;
+          font-weight: 600;
+        }
+
+        small.description {
+          font-size: 0.75em;
+          color: rgb(128, 128, 128);
+        }
       `}</style>
     </>
   )
