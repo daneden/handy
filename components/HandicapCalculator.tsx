@@ -113,11 +113,15 @@ export default function HandicapCalculator() {
       <Input label="Handicap Index">
         <input
           data-testid="handicap-index"
-          type="text"
+          type="step"
+          step="0.1"
+          min={HANDICAP_MIN}
+          max={HANDICAP_MAX}
           value={handicapIndex}
           onChange={(e) => sanitizeAndSetHandicapIndex(e.currentTarget.value)}
           onKeyDown={handleKeyPress}
-          inputMode="numeric"
+          // @ts-ignore
+          inputMode="number"
           pattern={handicapRegex.source}
         />
       </Input>
