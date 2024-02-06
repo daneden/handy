@@ -123,6 +123,7 @@ export default function HandicapCalculator() {
           onChange={(e) => sanitizeAndSetHandicapIndex(e.currentTarget.value)}
           onKeyDown={handleKeyPress}
           pattern={handicapRegex.source}
+          inputMode="decimal"
         />
       </Input>
 
