@@ -42,8 +42,6 @@ export default function HandicapCalculator() {
   const [allowance, setAllowance] = useState(0)
   const [score, setScore] = useState(0)
 
-  const isNegative = Number(handicapIndex) < 0
-
   useEffect(() => {
     const { rating, courseRating, par } = slopeRatings[slopeRating]
     const allowancePercentage = allowances[allowance] / 100
@@ -123,27 +121,8 @@ export default function HandicapCalculator() {
           onChange={(e) => sanitizeAndSetHandicapIndex(e.currentTarget.value)}
           onKeyDown={handleKeyPress}
           pattern={handicapRegex.source}
-          inputMode="decimal"
         />
       </Input>
-
-      <label className="checkbox-label">
-        <input
-          type="checkbox"
-          checked={!isNegative}
-          onInput={() =>
-            sanitizeAndSetHandicapIndex((Number(handicapIndex) * -1).toString())
-          }
-          disabled={Number(handicapIndex) === 0}
-        />{" "}
-        <span className="label-text">
-          Positive handicap{" "}
-          <small className="description">
-            Updates automatically. Click to toggle between positive and negative
-            value.
-          </small>
-        </span>
-      </label>
 
       <Input label="Select which tees you are playing off">
         <select
