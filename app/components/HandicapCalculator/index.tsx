@@ -1,6 +1,6 @@
 "use client"
 
-import { KeyboardEvent, useEffect, useState } from "react"
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react"
 import Input from "../Input"
 import styles from "./styles.module.css"
 
@@ -16,36 +16,92 @@ interface Tee {
   par: number
 }
 
-const slopeRatings: Array<Tee> = [
+const mensSlopeRatings: Array<Tee> = [
   {
-    name: "White",
+    name: "White 18h",
     rating: 124,
     courseRating: 71.8,
     par: 72,
   },
   {
-    name: "Yellow",
+    name: "White Front 9",
+    rating: 122,
+    courseRating: 35.4,
+    par: 36,
+  },
+  {
+    name: "White Back 9",
+    rating: 125,
+    courseRating: 36.4,
+    par: 36,
+  },
+  {
+    name: "Yellow 18h",
     rating: 119,
     courseRating: 69.4,
     par: 72,
   },
   {
-    name: "Red",
+    name: "Yellow Front 9",
+    rating: 114,
+    courseRating: 34,
+    par: 36,
+  },
+  {
+    name: "Yellow Back 9",
+    rating: 123,
+    courseRating: 35.4,
+    par: 36,
+  },
+  {
+    name: "Red 18h",
+    rating: 113,
+    courseRating: 67.3,
+    par: 70,
+  },
+]
+
+const womensSlopeRatings: Array<Tee> = [
+  {
+    name: "White 18h",
+    rating: 135,
+    courseRating: 76.4,
+    par: 76,
+  },
+  {
+    name: "Yellow 18h",
+    rating: 126,
+    courseRating: 74.6,
+    par: 75,
+  },
+  {
+    name: "Red 18h",
     rating: 118,
     courseRating: 72.4,
     par: 73,
   },
+  {
+    name: "Red Front 9",
+    rating: 114,
+    courseRating: 35.3,
+    par: 36,
+  },
+  {
+    name: "Red Back 9",
+    rating: 122,
+    courseRating: 37.1,
+    par: 37,
+  },
 ]
-
-enum Holes {
-  full = "18",
-  frontNine = "Front 9",
-  backNine = "Back 9",
-}
 
 enum Gender {
   men = "Men",
   women = "Women",
+}
+
+const slopeRatings = {
+  [Gender.men]: mensSlopeRatings,
+  [Gender.women]: womensSlopeRatings,
 }
 
 const allowances = [100, 95, 90, 85, 75]
@@ -55,11 +111,12 @@ export default function HandicapCalculator() {
   const [slopeRating, setSlopeRating] = useState(0)
   const [allowance, setAllowance] = useState(0)
   const [score, setScore] = useState(0)
-  const [holes, setHoles] = useState(Holes.full)
   const [gender, setGender] = useState(Gender.men)
 
+  const genderSlopeRatings = slopeRatings[gender]
+
   useEffect(() => {
-    const { rating, courseRating, par } = slopeRatings[slopeRating]
+    const { rating, courseRating, par } = genderSlopeRatings[slopeRating]
     const allowancePercentage = allowances[allowance] / 100
     const handicapNum = Number.isNaN(Number(handicapIndex))
       ? 0
@@ -71,7 +128,7 @@ export default function HandicapCalculator() {
           allowancePercentage
       )
     )
-  }, [handicapIndex, slopeRating, allowance])
+  }, [handicapIndex, slopeRating, allowance, genderSlopeRatings])
 
   function sanitizeAndSetHandicapIndex(newValue: string) {
     let transformedValue = newValue
@@ -124,6 +181,15 @@ export default function HandicapCalculator() {
     }
   }
 
+  function safelySetGender(e: ChangeEvent<HTMLInputElement>) {
+    const newValue = e.currentTarget.value as Gender
+    const newSlopeRatings = slopeRatings[newValue]
+    if (slopeRating >= newSlopeRatings.length) {
+      setSlopeRating(newSlopeRatings.length - 1)
+    }
+    setGender(newValue)
+  }
+
   return (
     <>
       <span className={`label-text ${styles.radioList}`}>
@@ -133,7 +199,7 @@ export default function HandicapCalculator() {
               name="gender"
               checked={gender == Gender[key]}
               value={Gender[key]}
-              onChange={(e) => setGender(e.currentTarget.value as Gender)}
+              onChange={safelySetGender}
               type="radio"
             />
             {Gender[key]}
@@ -159,22 +225,9 @@ export default function HandicapCalculator() {
           value={slopeRating}
           onChange={(e) => setSlopeRating(Number(e.currentTarget.value))}
         >
-          {slopeRatings.map((item, index) => (
+          {genderSlopeRatings.map((item, index) => (
             <option key={item.name} value={index}>
               {item.name} ({item.rating})
-            </option>
-          ))}
-        </select>
-      </Input>
-      <Input label="Select holes">
-        <select
-          data-testid="holes-selector"
-          value={holes}
-          onChange={(e) => setHoles(e.currentTarget.value as Holes)}
-        >
-          {Object.keys(Holes).map((item) => (
-            <option key={Holes[item]} value={item}>
-              {Holes[item]}
             </option>
           ))}
         </select>
@@ -197,12 +250,6 @@ export default function HandicapCalculator() {
       <p data-testid="final-value" className={styles.large}>
         {score}
       </p>
-      <hr />
-      <footer>
-        <small>
-          Note that this result is only valid for Abergele tees (18 holes)
-        </small>
-      </footer>
     </>
   )
 }
