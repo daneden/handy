@@ -17,12 +17,14 @@
     "dev": "next dev",
     "pretest": "next build",
     "test": "start-server-and-test start http://localhost:3000 cypress",
-    "cypress": "cypress run"
+    "cypress": "cypress run",
+    "lint": "next lint"
   },
   "devDependencies": {
     "@types/node": "^20.11.16",
     "@types/react": "^18.2.55",
     "cypress": "^13.6.4",
+    "eslint": "^8.57.0",
     "eslint-config-next": "^14.1.1",
     "start-server-and-test": "^2.0.3"
   }
