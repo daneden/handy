@@ -14,6 +14,7 @@ interface Tee {
   rating: number
   courseRating: number
   par: number
+  courseLength: number
 }
 
 const mensSlopeRatings: Array<Tee> = [
@@ -22,42 +23,49 @@ const mensSlopeRatings: Array<Tee> = [
     rating: 124,
     courseRating: 71.8,
     par: 72,
+    courseLength: 1,
   },
   {
     name: "White Front 9",
     rating: 122,
     courseRating: 35.4,
     par: 36,
+    courseLength: 0.5,
   },
   {
     name: "White Back 9",
     rating: 125,
     courseRating: 36.4,
     par: 36,
+    courseLength: 0.5,
   },
   {
     name: "Yellow 18h",
     rating: 119,
     courseRating: 69.4,
     par: 72,
+    courseLength: 1,
   },
   {
     name: "Yellow Front 9",
     rating: 114,
     courseRating: 34,
     par: 36,
+    courseLength: 0.5,
   },
   {
     name: "Yellow Back 9",
     rating: 123,
     courseRating: 35.4,
     par: 36,
+    courseLength: 0.5,
   },
   {
     name: "Red 18h",
     rating: 113,
     courseRating: 67.3,
     par: 70,
+    courseLength: 1,
   },
 ]
 
@@ -67,30 +75,35 @@ const womensSlopeRatings: Array<Tee> = [
     rating: 135,
     courseRating: 76.4,
     par: 76,
+    courseLength: 1,
   },
   {
     name: "Yellow 18h",
     rating: 126,
     courseRating: 74.6,
     par: 75,
+    courseLength: 1,
   },
   {
     name: "Red 18h",
     rating: 118,
     courseRating: 72.4,
     par: 73,
+    courseLength: 1,
   },
   {
     name: "Red Front 9",
     rating: 114,
     courseRating: 35.3,
     par: 36,
+    courseLength: 0.5,
   },
   {
     name: "Red Back 9",
     rating: 122,
     courseRating: 37.1,
     par: 37,
+    courseLength: 1,
   },
 ]
 
@@ -116,7 +129,8 @@ export default function HandicapCalculator() {
   const genderSlopeRatings = slopeRatings[gender]
 
   useEffect(() => {
-    const { rating, courseRating, par } = genderSlopeRatings[slopeRating]
+    const { rating, courseRating, par, courseLength } =
+      genderSlopeRatings[slopeRating]
     const allowancePercentage = allowances[allowance] / 100
     const handicapNum = Number.isNaN(Number(handicapIndex))
       ? 0
@@ -124,7 +138,8 @@ export default function HandicapCalculator() {
 
     setScore(
       round(
-        ((handicapNum * rating) / CONSTANT + (courseRating - par)) *
+        ((handicapNum * courseLength * rating) / CONSTANT +
+          (courseRating - par)) *
           allowancePercentage
       )
     )
