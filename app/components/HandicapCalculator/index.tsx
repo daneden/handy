@@ -1,5 +1,8 @@
+"use client"
+
 import { KeyboardEvent, useEffect, useState } from "react"
-import Input from "./Input"
+import Input from "../Input"
+import styles from "./styles.module.css"
 
 const CONSTANT = 113
 const [HANDICAP_MIN, HANDICAP_MAX] = [-5.0, 54.0]
@@ -34,6 +37,17 @@ const slopeRatings: Array<Tee> = [
   },
 ]
 
+enum Holes {
+  full = "18",
+  frontNine = "Front 9",
+  backNine = "Back 9",
+}
+
+enum Gender {
+  men = "Men",
+  women = "Women",
+}
+
 const allowances = [100, 95, 90, 85, 75]
 
 export default function HandicapCalculator() {
@@ -41,6 +55,8 @@ export default function HandicapCalculator() {
   const [slopeRating, setSlopeRating] = useState(0)
   const [allowance, setAllowance] = useState(0)
   const [score, setScore] = useState(0)
+  const [holes, setHoles] = useState(Holes.full)
+  const [gender, setGender] = useState(Gender.men)
 
   useEffect(() => {
     const { rating, courseRating, par } = slopeRatings[slopeRating]
@@ -110,6 +126,20 @@ export default function HandicapCalculator() {
 
   return (
     <>
+      <span className={`label-text ${styles.radioList}`}>
+        {Object.keys(Gender).map((key) => (
+          <label key={key} className={styles.radioLabel}>
+            <input
+              name="gender"
+              checked={gender == Gender[key]}
+              value={Gender[key]}
+              onChange={(e) => setGender(e.currentTarget.value as Gender)}
+              type="radio"
+            />
+            {Gender[key]}
+          </label>
+        ))}
+      </span>
       <Input label="Handicap Index">
         <input
           data-testid="handicap-index"
@@ -123,7 +153,6 @@ export default function HandicapCalculator() {
           pattern={handicapRegex.source}
         />
       </Input>
-
       <Input label="Select which tees you are playing off">
         <select
           data-testid="tee-selector"
@@ -137,7 +166,19 @@ export default function HandicapCalculator() {
           ))}
         </select>
       </Input>
-
+      <Input label="Select holes">
+        <select
+          data-testid="holes-selector"
+          value={holes}
+          onChange={(e) => setHoles(e.currentTarget.value as Holes)}
+        >
+          {Object.keys(Holes).map((item) => (
+            <option key={Holes[item]} value={item}>
+              {Holes[item]}
+            </option>
+          ))}
+        </select>
+      </Input>
       <Input label="Handicap allowance">
         <select
           data-testid="handicap-allowance"
@@ -151,10 +192,9 @@ export default function HandicapCalculator() {
           ))}
         </select>
       </Input>
-
       <hr />
       <p>Your playing handicap:</p>
-      <p data-testid="final-value" className="large">
+      <p data-testid="final-value" className={styles.large}>
         {score}
       </p>
       <hr />
@@ -163,25 +203,6 @@ export default function HandicapCalculator() {
           Note that this result is only valid for Abergele tees (18 holes)
         </small>
       </footer>
-      <style jsx>{`
-        .large {
-          font-weight: 600;
-          font-size: 4rem;
-          line-height: 1;
-          font-variation-settings: "wdth" 70;
-        }
-
-        .checkbox-label {
-          display: flex;
-          align-items: baseline;
-          gap: 0.25em;
-          margin-bottom: 0.75rem;
-        }
-
-        small.description {
-          display: block;
-        }
-      `}</style>
     </>
   )
 }
