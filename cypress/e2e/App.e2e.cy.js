@@ -57,7 +57,7 @@ describe("App E2E", () => {
     cy.visit("/")
 
     cy.get(elements.handicapIndex).focus().clear().type("31.8").blur()
-    cy.get(elements.teeSelector).select("Yellow (119)")
+    cy.get(elements.teeSelector).select("Yellow 18h (119)")
     cy.get(elements.handicapAllowance).select("95%")
     cy.get(elements.handicapScore).should("contain.text", "31")
   })
