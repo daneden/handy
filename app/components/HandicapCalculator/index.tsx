@@ -138,9 +138,13 @@ export default function HandicapCalculator() {
 
     setScore(
       round(
-        ((handicapNum * courseLength * rating) / CONSTANT +
-          (courseRating - par)) *
-          allowancePercentage
+        Number(
+          (
+            ((handicapNum * courseLength * rating) / CONSTANT +
+              (courseRating - par)) *
+            allowancePercentage
+          ).toPrecision(2)
+        )
       )
     )
   }, [handicapIndex, slopeRating, allowance, genderSlopeRatings])
