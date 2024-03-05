@@ -8,6 +8,7 @@ const CONSTANT = 113
 const [HANDICAP_MIN, HANDICAP_MAX] = [-5.0, 54.0]
 const { round } = Math
 const handicapRegex = /(-)?(\d{1,2})(\.?\d)/
+const SIGNIFICANT_DIGITS = 5
 
 interface Tee {
   name: string
@@ -137,14 +138,12 @@ export default function HandicapCalculator() {
       : Number(handicapIndex)
 
     setScore(
-      round(
-        Number(
-          (
-            ((handicapNum * courseLength * rating) / CONSTANT +
-              (courseRating - par)) *
-            allowancePercentage
-          ).toPrecision(2)
-        )
+      Number(
+        (
+          ((handicapNum * courseLength * rating) / CONSTANT +
+            (courseRating - par)) *
+          allowancePercentage
+        ).toPrecision(SIGNIFICANT_DIGITS)
       )
     )
   }, [handicapIndex, slopeRating, allowance, genderSlopeRatings])
@@ -267,7 +266,7 @@ export default function HandicapCalculator() {
       <hr />
       <p>Your playing handicap:</p>
       <p data-testid="final-value" className={styles.large}>
-        {score}
+        {round(score)}
       </p>
     </>
   )
