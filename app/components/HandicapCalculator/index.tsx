@@ -8,7 +8,7 @@ const CONSTANT = 113
 const [HANDICAP_MIN, HANDICAP_MAX] = [-5.0, 54.0]
 const { round } = Math
 const handicapRegex = /(-)?(\d{1,2})(\.?\d)/
-const SIGNIFICANT_DIGITS = 5
+const SIGNIFICANT_DIGITS = 15
 
 interface Tee {
   name: string
