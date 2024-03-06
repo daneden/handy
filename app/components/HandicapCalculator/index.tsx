@@ -104,7 +104,7 @@ const womensSlopeRatings: Array<Tee> = [
     rating: 122,
     courseRating: 37.1,
     par: 37,
-    courseLength: 1,
+    courseLength: 0.5,
   },
 ]
 
