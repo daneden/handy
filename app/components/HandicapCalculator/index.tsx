@@ -8,7 +8,7 @@ const CONSTANT = 113
 const [HANDICAP_MIN, HANDICAP_MAX] = [-5.0, 54.0]
 const { round } = Math
 const handicapRegex = /(-)?(\d{1,2})(\.?\d)/
-const SIGNIFICANT_DIGITS = 15
+const SIGNIFICANT_DIGITS = 14
 
 interface Tee {
   name: string
@@ -268,6 +268,7 @@ export default function HandicapCalculator() {
       <p data-testid="final-value" className={styles.large}>
         {round(score)}
       </p>
+      <span className="meta description">{score}</span>
     </>
   )
 }
