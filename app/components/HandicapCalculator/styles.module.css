@@ -1,0 +1,28 @@
+.large {
+  font-weight: 600;
+  font-size: 4rem;
+  line-height: 1;
+  font-variation-settings: "wdth" 70;
+}
+
+.radioLabel {
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  background-color: rgba(128, 128, 128, 0.1);
+}
+
+.radioLabel > input {
+  margin-inline-end: 0.5em;
+  display: inline-block;
+}
+
+.radioLabel:has(:checked) {
+  background-color: hsla(200deg 100% 50% / 0.3);
+}
+
+.radioList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}

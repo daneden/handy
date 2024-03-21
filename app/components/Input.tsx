@@ -1,16 +1,16 @@
-import { ReactElement, ReactNode } from "react"
+import { ReactNode } from "react"
 
 interface Props {
   label: string
   description?: ReactNode
-  children: ReactElement<HTMLInputElement | HTMLTextAreaElement>
+  children: ReactNode
 }
 
 export default function Input({ label, description, children }: Props) {
   return (
     <>
-      <label>
-        <span className="label">{label}</span>
+      <label className="checkbox-label">
+        <span className="label-text">{label}</span>
         {children}
         {description && <small className="description">{description}</small>}
       </label>
@@ -22,16 +22,11 @@ export default function Input({ label, description, children }: Props) {
           margin-bottom: 1rem;
         }
 
-        span.label {
-          font-size: 0.875rem;
-          font-weight: 600;
-        }
-
         label :global(input),
         label :global(textarea),
         label :global(select) {
           -webkit-appearance: none;
-          display: block;
+          width: 100%;
           background-color: rgba(128, 128, 128, 0.05);
           padding: 0.25em 0.5em;
           font: inherit;
@@ -48,11 +43,6 @@ export default function Input({ label, description, children }: Props) {
 
         label:focus-within {
           color: var(--highlight-color);
-        }
-
-        small.description {
-          font-size: 0.75em;
-          color: rgb(128, 128, 128);
         }
       `}</style>
     </>
