@@ -268,7 +268,6 @@ export default function HandicapCalculator() {
       <p data-testid="final-value" className={styles.large}>
         {round(score)}
       </p>
-      <span className="meta description">{score}</span>
     </>
   )
 }
