@@ -118,7 +118,7 @@ const slopeRatings = {
   [Gender.women]: womensSlopeRatings,
 }
 
-const allowances = [100, 95, 90, 85, 75]
+const allowances = [100, 95, 90, 85, 75, 25, 20, 15, 10]
 
 export default function HandicapCalculator() {
   const [handicapIndex, setHandicapIndex] = useState("0")
