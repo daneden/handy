@@ -68,6 +68,20 @@ const mensSlopeRatings: Array<Tee> = [
     par: 70,
     courseLength: 1,
   },
+  {
+    name: "Red Front 9",
+    rating: 109,
+    courseRating: 33,
+    par: 35,
+    courseLength: 0.5,
+  },
+  {
+    name: "Red Back 9",
+    rating: 116,
+    courseRating: 34.3,
+    par: 35,
+    courseLength: 0.5,
+  },
 ]
 
 const womensSlopeRatings: Array<Tee> = [
